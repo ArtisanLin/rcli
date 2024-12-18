@@ -17,7 +17,7 @@ jobs:
   build-rust:
     strategy:
       matrix:
-        platform: [ubuntu-latest] # 检查平台
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
       - name: Check the package for errors
         run: cargo check --all
       - name: Lint rust sources
-        run: cargo clippy --all-targets --all-features --tests --benches -- -D warnings # warning 的时候跳出
+        run: cargo clippy --all-targets --all-features --tests --benches -- -D warnings
       - name: Execute rust tests
         run: cargo nextest run --all-features
       - name: Generate a changelog
