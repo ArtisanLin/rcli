@@ -1,5 +1,6 @@
 name: build
 
+# 触发条件
 on:
   push:
     branches:
@@ -11,10 +12,10 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: write # 工作流权限，允许写入仓库内容
 
-jobs:
-  build-rust:
+jobs: # 定义工作流中的作业
+  build-rust: # 定义作业名称
     strategy:
       matrix:
         platform: [ubuntu-latest]
