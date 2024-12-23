@@ -1,6 +1,9 @@
 use std::path::Path;
 // rcli csv -i input.csv -o output.json --header -d ','
 use clap::Parser;
+use csv::Reader;
+use serde::{Serializer, Deserialize, Serialize};
+
 
 #[derive(Debug, Parser)]
 // 下面这些都从 Cargo.toml 中拿
@@ -34,9 +37,34 @@ struct CsvOpts {
     header: bool,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+struct Player {
+    #[serde(rename = "Name")]
+    name: String,
+    #[serde(rename = "Position")]
+    position: String,
+    #[serde(rename = "DOB")]
+    dob: String,
+    #[serde(rename = "Nationality")]
+    nationality: String,
+    #[serde(rename = "Kit Number")]
+    kit: u8,
+}
+
 fn main() {
     let opts = Opts::parse();
-    println!("{:?}", opts);
+    match opts.cmd {
+        SubCommand::Csv(opts) => {
+            let mut reader = Reader::from_path(opts.input).unwrap();
+            let records = reader
+                .deserialize()
+                .map(|record| record.unwrap())
+                .collect::<Vec<Player>>();
+
+            println!("{:?}", records)
+        }
+
+    }
 }
 
 fn verify_input_file(filename: &str) -> Result<String, &'static str>{
