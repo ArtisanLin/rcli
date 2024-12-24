@@ -1,6 +1,6 @@
-use std::fs;
 use csv::Reader;
 use serde::{Deserialize, Serialize};
+use std::fs;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Player {
@@ -26,7 +26,7 @@ pub fn process_csv(input: &str, output: &str) -> anyhow::Result<()> {
     }
     let json = serde_json::to_string_pretty(&ret)?;
     // 返回 （） unit 元组
-    fs::write(output, json)?; 
-    
+    fs::write(output, json)?;
+
     Ok(())
 }

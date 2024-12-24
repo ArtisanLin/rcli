@@ -1,5 +1,5 @@
-use std::path::Path;
 use clap::Parser;
+use std::path::Path;
 
 #[derive(Debug, Parser)]
 // 下面这些都从 Cargo.toml 中拿
@@ -8,7 +8,6 @@ pub struct Opts {
     #[command(subcommand)]
     pub cmd: SubCommand,
 }
-
 
 #[derive(Debug, Parser)]
 pub enum SubCommand {
@@ -32,7 +31,7 @@ pub struct CsvOpts {
     #[arg(long, default_value_t = true)]
     pub header: bool,
 }
-fn verify_input_file(filename: &str) -> Result<String, &'static str>{
+fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     if Path::new(filename).exists() {
         // 使用 into 来进行类型转化，只要filename 实现了 Display trait 就可以
         Ok(filename.into())
