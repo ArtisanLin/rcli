@@ -1,3 +1,4 @@
+use std::fs;
 use std::path::Path;
 // rcli csv -i input.csv -o output.json --header -d ','
 use clap::Parser;
@@ -57,13 +58,13 @@ fn main() -> anyhow::Result<()> {
         SubCommand::Csv(opts) => {
             // 使用？来进行错误处理，如果出错就会返回 Err，否则就会返回 Ok
             let mut reader = Reader::from_path(opts.input)?;
-            let records = reader
-                .deserialize()
-                .map(|record| record.map_err(|e| anyhow::anyhow!(e)))
-                // 结果要包含中间可能出现的错误，并且在末尾使用 ？ 问号来进行错误处理
-                .collect::<Result<Vec<Player>, anyhow::Error>>()?;
-
-            println!("{:?}", records)
+            let mut ret = Vec::with_capacity(128);
+            for result in reader.deserialize() {
+                let record: Player = result?;
+                ret.push(record);
+            }
+            let json = serde_json::to_string_pretty(&ret)?;
+            fs::write(opts.output, json)?;
         }
 
     }
