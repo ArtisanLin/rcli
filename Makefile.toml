@@ -1,0 +1,3 @@
+[tasks.run_csv]
+command = "cargo"
+args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.json"]
