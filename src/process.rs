@@ -1,6 +1,7 @@
 use csv::Reader;
 use serde::{Deserialize, Serialize};
 use std::fs;
+use anyhow::{Result, Context};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Player {
@@ -16,12 +17,13 @@ pub struct Player {
     kit: u8,
 }
 
-pub fn process_csv(input: &str, output: &str) -> anyhow::Result<()> {
+pub fn process_csv(input: &str, output: &str) -> Result<()> {
     // 使用？来进行错误处理，如果出错就会返回 Err，否则就会返回 Ok
     let mut reader = Reader::from_path(input)?;
     let mut ret = Vec::with_capacity(128);
     for result in reader.deserialize() {
-        let record: Player = result?;
+        // 对 csv 中某一行的处理，可能无法反序列化，所以需要使用 ? 来进行错误处理
+        let record: Player = result.with_context(|| "此行无法序列化")?;
         ret.push(record);
     }
     let json = serde_json::to_string_pretty(&ret)?;
