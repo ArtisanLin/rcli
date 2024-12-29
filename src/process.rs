@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use anyhow::{Result, Context};
 use serde_json::Value;
+use crate::opts::OutputFormat;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Player {
@@ -18,7 +19,7 @@ pub struct Player {
     kit: u8,
 }
 
-pub fn process_csv(input: &str, output: &str) -> Result<()> {
+pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<()> {
     // 使用？来进行错误处理，如果出错就会返回 Err，否则就会返回 Ok
     let mut reader = Reader::from_path(input)?;
     let mut ret = Vec::with_capacity(128);

@@ -1,5 +1,6 @@
 use clap::Parser;
 use std::path::Path;
+use std::str::FromStr;
 
 #[derive(Debug, Parser)]
 // 下面这些都从 Cargo.toml 中拿
@@ -15,6 +16,13 @@ pub enum SubCommand {
     Csv(CsvOpts),
 }
 
+// NOTE：Clone 与 Copy 的区别是什么？
+#[derive(Debug, Clone, Copy)]
+pub enum OutputFormat {
+    Json,
+    Yaml,
+    Toml,
+}
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
     #[arg(short, long, value_parser = verify_input_file)]
@@ -22,7 +30,11 @@ pub struct CsvOpts {
 
     // #[arg(short, long, default_value_t = String::from("output.json"))] // "output.json".into()
     #[arg(short, long, default_value = "output.json")] // "output.json".into()
-    pub output: String,
+    pub output: Option<String>,
+
+    // NOTE: value_parser 作用详解 
+    #[arg(short, long, value_parser = parse_format, default_value = "json")]
+    pub format: OutputFormat,
 
     #[arg(short, long, default_value_t = ',')]
     pub delimiter: char,
@@ -37,5 +49,33 @@ fn verify_input_file(filename: &str) -> Result<String, &'static str> {
         Ok(filename.into())
     } else {
         Err("file does not exist")
+    }
+}
+
+fn parse_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
+    format.parse::<OutputFormat>()
+}
+
+impl From<OutputFormat> for &'static str {
+    fn from(format: OutputFormat) -> Self {
+        match format {
+            OutputFormat::Json => "json",
+            OutputFormat::Yaml => "yaml",
+            OutputFormat::Toml => "toml",
+        }
+    }
+
+}
+
+impl FromStr for OutputFormat {
+    type Err = anyhow::Error;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value.to_lowercase().as_str() {
+            "json" => Ok(OutputFormat::Json),
+            "yaml" => Ok(OutputFormat::Yaml),
+            "toml" => Ok(OutputFormat::Toml),
+            // NOTE: anyhow! 宏的作用是什么？
+            _ => Err(anyhow::anyhow!("Unsupported format")),
+        }
     }
 }
