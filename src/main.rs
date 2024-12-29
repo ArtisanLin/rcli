@@ -1,8 +1,8 @@
 // rcli csv -i input.csv -o output.json --header -d ','
+use anyhow::Context;
 use clap::Parser;
 use rcli::opts::{Opts, SubCommand};
 use rcli::process::process_csv;
-use anyhow::Context;
 
 fn main() {
     let opts = Opts::parse();

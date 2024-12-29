@@ -32,7 +32,7 @@ pub struct CsvOpts {
     #[arg(short, long, default_value = "output.json")] // "output.json".into()
     pub output: Option<String>,
 
-    // NOTE: value_parser 作用详解 
+    // NOTE: value_parser 作用详解
     #[arg(short, long, value_parser = parse_format, default_value = "json")]
     pub format: OutputFormat,
 
@@ -64,7 +64,6 @@ impl From<OutputFormat> for &'static str {
             OutputFormat::Toml => "toml",
         }
     }
-
 }
 
 impl FromStr for OutputFormat {
