@@ -1,5 +1,6 @@
-use std::fmt;
 use clap::Parser;
+use serde::{Deserialize, Serialize};
+use std::fmt;
 use std::path::Path;
 use std::str::FromStr;
 
@@ -18,12 +19,13 @@ pub enum SubCommand {
 }
 
 // NOTE：Clone 与 Copy 的区别是什么？
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
 pub enum OutputFormat {
     Json,
     Yaml,
-    Toml,
+    // Toml,
 }
+// NOTE: Parser 作用是什么？
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
     #[arg(short, long, value_parser = verify_input_file)]
@@ -34,7 +36,7 @@ pub struct CsvOpts {
     pub output: Option<String>,
 
     // NOTE: value_parser 作用详解
-    #[arg(short, long, value_parser = parse_format, default_value = "json")]
+    #[arg(long, value_parser = parse_format, default_value = "json")]
     pub format: OutputFormat,
 
     #[arg(short, long, default_value_t = ',')]
@@ -54,6 +56,7 @@ fn verify_input_file(filename: &str) -> Result<String, &'static str> {
 }
 
 fn parse_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
+    // NOTE: 如何做的？
     format.parse::<OutputFormat>()
 }
 
@@ -62,7 +65,7 @@ impl From<OutputFormat> for &'static str {
         match format {
             OutputFormat::Json => "json",
             OutputFormat::Yaml => "yaml",
-            OutputFormat::Toml => "toml",
+            // OutputFormat::Toml => "toml",
         }
     }
 }
@@ -73,9 +76,9 @@ impl FromStr for OutputFormat {
         match value.to_lowercase().as_str() {
             "json" => Ok(OutputFormat::Json),
             "yaml" => Ok(OutputFormat::Yaml),
-            "toml" => Ok(OutputFormat::Toml),
+            // "toml" => Ok(OutputFormat::Toml),
             // NOTE: anyhow! 宏的作用是什么？
-            _ => Err(anyhow::anyhow!("Unsupported format")),
+            _ => Err(anyhow::anyhow!("Unsupported format 111")),
         }
     }
 }

@@ -1,3 +1,20 @@
 [tasks.run_csv]
 command = "cargo"
 args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.json"]
+
+
+# 暂不支持，与json & yaml 所需数据结构不太一样
+#[tasks.toml]
+#command = "cargo"
+#args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.toml" ,"--format", "toml"]
+
+[tasks.yaml]
+command = "cargo"
+args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.yaml" ,"--format", "yaml"]
+
+
+[tasks.json]
+command = "cargo"
+args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.json" ,"--format", "json"]
+
+
