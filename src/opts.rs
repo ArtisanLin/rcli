@@ -1,3 +1,4 @@
+use std::fmt;
 use clap::Parser;
 use std::path::Path;
 use std::str::FromStr;
@@ -76,5 +77,12 @@ impl FromStr for OutputFormat {
             // NOTE: anyhow! 宏的作用是什么？
             _ => Err(anyhow::anyhow!("Unsupported format")),
         }
+    }
+}
+
+impl fmt::Display for OutputFormat {
+    // NOTE: f 是什么类型？
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", Into::<&str>::into(*self))
     }
 }
