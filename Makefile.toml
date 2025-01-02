@@ -17,4 +17,8 @@ args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.yam
 command = "cargo"
 args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.json" ,"--format", "json"]
 
+[tasks.pass]
+command = "cargo"
+args = ["run", "--", "genpass"]
+
 

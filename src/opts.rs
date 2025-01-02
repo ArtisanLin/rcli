@@ -16,6 +16,9 @@ pub struct Opts {
 pub enum SubCommand {
     #[command(name = "csv", about = "Show CSV, or convert CSV to JSON")]
     Csv(CsvOpts),
+    // Csv 以及 GenPass 是什么用法？
+    #[command(name = "genpass", about = "Generate a random password")]
+    GenPass(GenPassOpts),
 }
 
 // NOTE：Clone 与 Copy 的区别是什么？
@@ -46,6 +49,25 @@ pub struct CsvOpts {
     #[arg(long, default_value_t = true)]
     pub header: bool,
 }
+
+// NOTE: Parser 作用是什么？
+#[derive(Debug, Parser)]
+pub struct GenPassOpts {
+    #[arg(short, long, default_value_t = 16)]
+    pub length: u8,
+    
+    #[arg(long, default_value_t = true)]
+    pub uppercase: bool,
+    
+    #[arg(long, default_value_t = true)]
+    pub lowercase: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub number: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub symbol: bool,
+} 
 fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     if Path::new(filename).exists() {
         // 使用 into 来进行类型转化，只要filename 实现了 Display trait 就可以

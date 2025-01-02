@@ -14,5 +14,8 @@ fn main() {
             };
             process_csv(&opts.input, output, opts.format).expect("TODO: panic message");
         }
+        SubCommand::GenPass(opts) => {
+            println!("Generate password: {:?}", opts)
+        }
     }
 }
