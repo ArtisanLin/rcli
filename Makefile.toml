@@ -19,6 +19,6 @@ args = ["run", "--", "csv", "-i", "assets/juventus.csv", "-o", "assets/test0.jso
 
 [tasks.pass]
 command = "cargo"
-args = ["run", "--", "genpass"]
+args = ["run", "--", "genpass", "--length", "16"]
 
 
