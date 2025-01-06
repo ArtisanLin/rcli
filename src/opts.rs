@@ -108,6 +108,7 @@ impl FromStr for OutputFormat {
 impl fmt::Display for OutputFormat {
     // NOTE: f 是什么类型？
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // NOTE: 注意 into 方法的调用方式
         write!(f, "{}", Into::<&str>::into(*self))
     }
 }

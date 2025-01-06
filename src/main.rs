@@ -1,6 +1,7 @@
 use clap::Parser;
 use rcli::opts::{Opts, SubCommand};
 use rcli::process::process_csv;
+use rcli::process_gen_pass;
 
 fn main() {
     let opts = Opts::parse();
@@ -15,7 +16,13 @@ fn main() {
             process_csv(&opts.input, output, opts.format).expect("TODO: panic message");
         }
         SubCommand::GenPass(opts) => {
-            println!("Generate password: {:?}", opts)
+            process_gen_pass(
+                opts.length,
+                opts.lowercase,
+                opts.uppercase,
+                opts.number,
+                opts.symbol,
+            );
         }
     }
 }
