@@ -1,6 +1,7 @@
 use crate::opts::GenPassOpts;
 use anyhow::Result;
 use rand::prelude::SliceRandom;
+use zxcvbn::zxcvbn;
 use rand::thread_rng;
 use rand::Rng;
 
@@ -46,9 +47,16 @@ pub fn process_gen_pass(length: u8, lower: bool, upper: bool, number: bool, symb
     }
     // NOTE: shuffle 方法的作用
     password.shuffle(&mut rng);
+    
+    let password = String::from_utf8(password)?;
+    println!("{}", password);
+
+
+    // NOTE: password 的强度
+    let estimate = zxcvbn(&password, &[]);
+    eprintln!("Password strength: {}", estimate.score());
 
     // TODO：make sure the password has at least one of each type
-    println!("{:?}", String::from_utf8(password)?);
 
     Ok(())
 }
