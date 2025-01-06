@@ -55,10 +55,10 @@ pub struct CsvOpts {
 pub struct GenPassOpts {
     #[arg(short, long, default_value_t = 16)]
     pub length: u8,
-    
+
     #[arg(long, default_value_t = true)]
     pub uppercase: bool,
-    
+
     #[arg(long, default_value_t = true)]
     pub lowercase: bool,
 
@@ -67,7 +67,7 @@ pub struct GenPassOpts {
 
     #[arg(long, default_value_t = true)]
     pub symbol: bool,
-} 
+}
 fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     if Path::new(filename).exists() {
         // 使用 into 来进行类型转化，只要filename 实现了 Display trait 就可以
