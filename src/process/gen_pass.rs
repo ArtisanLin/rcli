@@ -61,6 +61,9 @@ pub fn process_gen_pass(
 
     // NOTE: password 的强度
     let estimate = zxcvbn(&password, &[]);
+    // NOTE: eprintln 与 println 的区别
+    // NOTE: 如果通过 cargo run -- genpass -l 16  > output.txt 重定向输出，那么 eprintln 不会输出到文件中
+    // NOTE: 如果通过 cargo make pass > output.txt 那么会输出很多cargo make 的信息
     eprintln!("Password strength: {}", estimate.score());
 
     // TODO：make sure the password has at least one of each type
