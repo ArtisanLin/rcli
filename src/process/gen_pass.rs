@@ -1,8 +1,5 @@
-use crate::opts::GenPassOpts;
 use anyhow::Result;
 use rand::prelude::SliceRandom;
-use rand::thread_rng;
-use rand::Rng;
 use zxcvbn::zxcvbn;
 
 // NOTE: 使用 const 的时候，需要显示声明类型

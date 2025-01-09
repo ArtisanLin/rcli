@@ -1,25 +1,9 @@
+// NOTE: 可以通过super对mod中的方法进行引用
+use super::verify_input_file;
 use clap::Parser;
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use std::path::Path;
 use std::str::FromStr;
-
-#[derive(Debug, Parser)]
-// 下面这些都从 Cargo.toml 中拿
-#[command(name="rcli", version, author, about, long_about = None)]
-pub struct Opts {
-    #[command(subcommand)]
-    pub cmd: SubCommand,
-}
-
-#[derive(Debug, Parser)]
-pub enum SubCommand {
-    #[command(name = "csv", about = "Show CSV, or convert CSV to JSON")]
-    Csv(CsvOpts),
-    // Csv 以及 GenPass 是什么用法？
-    #[command(name = "genpass", about = "Generate a random password")]
-    GenPass(GenPassOpts),
-}
 
 // NOTE：Clone 与 Copy 的区别是什么？
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
@@ -48,33 +32,6 @@ pub struct CsvOpts {
     // header 以 h 开头，和 help 冲突，可以不使用short，将其规避
     #[arg(long, default_value_t = true)]
     pub header: bool,
-}
-
-// NOTE: Parser 作用是什么？
-#[derive(Debug, Parser)]
-pub struct GenPassOpts {
-    #[arg(short, long, default_value_t = 16)]
-    pub length: u8,
-
-    #[arg(long, default_value_t = true)]
-    pub uppercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub lowercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub number: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub symbol: bool,
-}
-fn verify_input_file(filename: &str) -> Result<String, &'static str> {
-    if Path::new(filename).exists() {
-        // 使用 into 来进行类型转化，只要filename 实现了 Display trait 就可以
-        Ok(filename.into())
-    } else {
-        Err("file does not exist")
-    }
 }
 
 fn parse_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
