@@ -27,6 +27,9 @@ pub struct Base64DecodeOpts {
     // NOTE: - 表示从stdin读取的内容
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
+    
+    #[arg(long, value_parser = parse_base_64_format, default_value_t = Base64Format::Standard)]
+    pub format: Base64Format,
 }
 
 #[derive(Debug, Parser, Clone, Copy)]
