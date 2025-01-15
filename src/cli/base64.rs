@@ -1,4 +1,6 @@
-use super::verify_input_file;
+use std::fmt;
+use std::str::FromStr;
+use super::{verify_input_file, OutputFormat};
 use clap::Parser;
 
 #[derive(Debug, Parser)]
@@ -15,6 +17,9 @@ pub struct Base64EncodeOpts {
     // NOTE: - 表示从stdin读取的内容
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
+
+    #[arg(long, value_parser = parse_base_64_format, default_value_t = Base64Format::Standard)]
+    pub format: Base64Format,
 }
 
 #[derive(Debug, Parser)]
@@ -22,4 +27,44 @@ pub struct Base64DecodeOpts {
     // NOTE: - 表示从stdin读取的内容
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
+}
+
+#[derive(Debug, Parser, Clone, Copy)]
+pub enum Base64Format {
+    Standard,
+    UrlSafe
+}
+
+fn parse_base_64_format(format: &str) -> Result<Base64Format, anyhow::Error> {
+    format.parse()
+}
+
+// NOTE: 从&'static str到Base64Format的转换
+impl FromStr for Base64Format {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "standard" => Ok(Base64Format::Standard),
+            "urlsafe" => Ok(Base64Format::UrlSafe),
+            _ => Err(anyhow::anyhow!("Invalid base64 format")),
+        }
+    }
+}
+
+// NOTE: 从Base64Format到&'static str的转换
+impl From<Base64Format> for &'static str {
+    fn from(format: Base64Format) -> Self {
+        match format {
+            Base64Format::Standard => "standard",
+            Base64Format::UrlSafe => "urlsafe",
+        }
+    }
+}
+
+// NOTE: Debug trait 实现基础
+impl fmt::Display for Base64Format {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // NOTE: 调用 From<Base64Format> for &'static str 的实现
+        write!(f, "{}", Into::<&str>::into(*self))
+    }
 }

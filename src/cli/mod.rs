@@ -2,13 +2,14 @@ mod base64;
 mod csv;
 mod genpass;
 
+use clap::Parser;
+use std::path::Path;
+
 pub use self::{
-    base64::Base64SubCommand,
+    base64::{Base64SubCommand, Base64Format},
     csv::{CsvOpts, OutputFormat},
     genpass::GenPassOpts,
 };
-use clap::Parser;
-use std::path::Path;
 
 #[derive(Debug, Parser)]
 // 下面这些都从 Cargo.toml 中拿
