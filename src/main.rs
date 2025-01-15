@@ -29,11 +29,11 @@ fn main() {
 
         SubCommand::Base64(subcmd) => match subcmd {
             Base64SubCommand::Encode(opts) => {
-                process_encode(&opts.input, opts.format).expect("TODO: panic message")
+                process_encode(&opts.input, opts.format).expect("encode failed")
             }
 
             Base64SubCommand::Decode(opts) => {
-                process_decode(&opts.input, opts.format).expect("TODO: panic message")
+                process_decode(&opts.input, opts.format).expect("decode failed")
             }
         },
     }
