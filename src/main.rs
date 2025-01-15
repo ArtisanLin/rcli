@@ -1,5 +1,8 @@
 use clap::Parser;
-use rcli::{process_csv, process_decode, process_encode, process_gen_pass, Base64SubCommand, Opts, SubCommand};
+use rcli::{
+    process_csv, process_decode, process_encode, process_gen_pass, Base64SubCommand, Opts,
+    SubCommand,
+};
 
 fn main() {
     let opts = Opts::parse();
@@ -28,7 +31,7 @@ fn main() {
             Base64SubCommand::Encode(opts) => {
                 process_encode(&opts.input, opts.format).expect("TODO: panic message")
             }
-            
+
             Base64SubCommand::Decode(opts) => {
                 process_decode(&opts.input, opts.format).expect("TODO: panic message")
             }

@@ -6,7 +6,7 @@ use clap::Parser;
 use std::path::Path;
 
 pub use self::{
-    base64::{Base64SubCommand, Base64Format},
+    base64::{Base64Format, Base64SubCommand},
     csv::{CsvOpts, OutputFormat},
     genpass::GenPassOpts,
 };

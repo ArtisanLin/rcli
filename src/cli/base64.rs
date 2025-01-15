@@ -1,7 +1,7 @@
+use super::verify_input_file;
+use clap::Parser;
 use std::fmt;
 use std::str::FromStr;
-use super::{verify_input_file, OutputFormat};
-use clap::Parser;
 
 #[derive(Debug, Parser)]
 pub enum Base64SubCommand {
@@ -18,7 +18,7 @@ pub struct Base64EncodeOpts {
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
 
-    #[arg(long, value_parser = parse_base_64_format, default_value_t = Base64Format::Standard)]
+    #[arg(long, value_parser = parse_base_64_format, default_value = "standard")]
     pub format: Base64Format,
 }
 
@@ -27,19 +27,20 @@ pub struct Base64DecodeOpts {
     // NOTE: - 表示从stdin读取的内容
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
-    
-    #[arg(long, value_parser = parse_base_64_format, default_value_t = Base64Format::Standard)]
+
+    #[arg(long, value_parser = parse_base_64_format, default_value = "standard")]
     pub format: Base64Format,
 }
 
 #[derive(Debug, Parser, Clone, Copy)]
 pub enum Base64Format {
     Standard,
-    UrlSafe
+    UrlSafe,
 }
 
 fn parse_base_64_format(format: &str) -> Result<Base64Format, anyhow::Error> {
-    format.parse()
+    let res: Base64Format = format.parse()?;
+    Ok(res)
 }
 
 // NOTE: 从&'static str到Base64Format的转换

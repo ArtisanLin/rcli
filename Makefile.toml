@@ -22,3 +22,8 @@ command = "cargo"
 args = ["run", "--", "genpass", "--length", "16"]
 
 
+[tasks.base64]
+command = "cargo"
+args = ["run", "--", "base64", "encode", "--format urlsafe"]
+
+
