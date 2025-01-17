@@ -11,4 +11,4 @@ first commit
 ```makefile
 cargo make base64 encode > temp.b64
 ```
-- 在windows环境下，执行 ”> temp.b64“ 操作，生成的temp.b64 是utr-16编码的，无法直接通过 File::open().read_to_string() 打开，需要在Ubuntu下执行
+- 在windows环境下，执行 ”> temp.b64“ 操作，生成的temp.b64 是utf-16编码的，无法直接通过 File::open().read_to_string() 打开，需要在Ubuntu下执行
